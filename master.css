@@ -1,3 +1,8 @@
-#board{
-	width: 100%;
+body{
+	background: #161616;
 }
+#board{
+	width: 80%;
+	margin: auto;
+}
+

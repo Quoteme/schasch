@@ -9,6 +9,7 @@ const init = _ => {
 		position: 'start',
 		onDragStart: onDragStart,
 		onDrop: onDrop,
+		pieceTheme: 'img/chesspieces/stefanrobert/{piece}.png',
 		onSnapEnd: onSnapEnd
 	}
 	board = Chessboard('board', config);

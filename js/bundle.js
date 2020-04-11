@@ -10,6 +10,7 @@ const init = _ => {
 		position: 'start',
 		onDragStart: onDragStart,
 		onDrop: onDrop,
+		pieceTheme: 'img/chesspieces/stefanrobert/{piece}.png',
 		onSnapEnd: onSnapEnd
 	}
 	board = Chessboard('board', config);
@@ -21,8 +22,8 @@ const update = _ => {
 
 const updateStatus = _ => {
 	game.turn() === 'b'
-		? moveColor = 'White'
-		: moveColor = 'Black'
+		? moveColor = 'Schwarz'
+		: moveColor = 'Weiß'
 	// schachmatt?
 	if( game.in_checkmate() )
 		return `Spielende: ${moveColor} ist im Schasch Matt!`;
