@@ -1,23 +1,25 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const { Chess } = require('../node_modules/chess.js')
-const game = new Chess();
-
+let game;
 let board;
 
 const init = _ => {
+	let fen = JSON.parse(document.cookie).fen;
 	var config = {
 		draggable: true,
-		position: 'start',
+		position: fen!=undefined?fen:'start',
 		onDragStart: onDragStart,
 		onDrop: onDrop,
 		pieceTheme: 'img/chesspieces/stefanrobert/{piece}.png',
 		onSnapEnd: onSnapEnd
 	}
+	game = new Chess(fen);
 	board = Chessboard('board', config);
 }
 
 const update = _ => {
-	console.log(updateStatus());
+	document.cookie = JSON.stringify({'fen': game.fen()})
+	updateStatus();
 }
 
 const updateStatus = _ => {
@@ -25,18 +27,45 @@ const updateStatus = _ => {
 		? moveColor = 'Schwarz'
 		: moveColor = 'Weiß'
 	// schachmatt?
-	if( game.in_checkmate() )
-		return `Spielende: ${moveColor} ist im Schasch Matt!`;
+	if( game.in_checkmate() ){
+		Toastify({
+			text: `Spielende: ${moveColor} ist im Schasch-Matt!`,
+			duration: 5000,
+			newWindow: true,
+			gravity: 'bottom',
+			position: 'center',
+		}).showToast();
+		document.cookie = '{}';
+	}
 	// gleichstand?
-	else if( game.in_draw() )
-		return `Game over, keiner gewinnt.`;
-	// schach?
+	else if( game.in_draw() ){
+		Toastify({
+			text: `Spielende, keiner gewinnt.`,
+			duration: 5000,
+			newWindow: true,
+			gravity: 'bottom',
+			position: 'center',
+		}).showToast();
+		document.cookie = '{}';
+	}
+		// schach?
 	else if( game.in_check() )
-		return `${moveColor} ist im Schasch und muss ziehen.`;
+		Toastify({
+			text: `${moveColor} ist im Schasch und muss ziehen.`,
+			duration: 3000,
+			newWindow: true,
+			gravity: 'bottom',
+			position: 'center',
+		}).showToast();
 	// neuer Zug?
 	else
-		return `${moveColor} muss ziehen.`;
-
+		Toastify({
+			text: `${moveColor} muss ziehen.`,
+			duration: 3000,
+			newWindow: true,
+			gravity: 'bottom',
+			position: 'center',
+		}).showToast();
 };
 const onDragStart = (source, piece, position, orientation) => {
 	// if gameover : no pieces move
