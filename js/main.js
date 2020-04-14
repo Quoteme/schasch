@@ -3,6 +3,8 @@ let game;
 let board;
 
 const init = _ => {
+	if(document.cookie=='')
+		document.cookie='{}';
 	let fen = JSON.parse(document.cookie).fen;
 	var config = {
 		draggable: true,
