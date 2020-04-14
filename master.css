@@ -1,8 +1,9 @@
 body{
 	background: #161616;
+	overscroll-behavior: contain;
 }
 #board{
-	width: 80%;
+	width: 100%;
 	margin: auto;
 }
 
